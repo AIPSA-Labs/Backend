@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aipsa-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://aipsa:aipsa_secret@postgres:5432/aipsa_platform?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aipsa-network
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: aipsa-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=aipsa
+      - POSTGRES_PASSWORD=aipsa_secret
+      - POSTGRES_DB=aipsa_platform
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aipsa -d aipsa_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aipsa-network
+
+volumes:
+  postgres_data:
+
+networks:
+  aipsa-network:
+    driver: bridge
