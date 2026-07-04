@@ -3,6 +3,8 @@ package config
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
+	"math/big"
 	"os"
 	"strings"
 	"time"
@@ -31,7 +33,7 @@ type Config struct {
 
 func Load() *Config {
 	cfg := &Config{
-		ServerPort:        getEnv("SERVER_PORT", "8080"),
+		ServerPort:        getEnv("SERVER_PORT", generateRandomPort()),
 		ServerHost:        getEnv("SERVER_HOST", "0.0.0.0"),
 		Environment:       getEnv("ENVIRONMENT", "development"),
 		DatabaseURL:       getEnv("DATABASE_URL", "postgres://aipsa:aipsa_secret@localhost:5432/aipsa_platform?sslmode=disable"),
@@ -84,4 +86,10 @@ func generateRandomKey(length int) string {
 		return hex.EncodeToString(make([]byte, length))
 	}
 	return hex.EncodeToString(b)
+}
+
+func generateRandomPort() string {
+	n, _ := rand.Int(rand.Reader, big.NewInt(50000))
+	port := 10000 + n.Int64()
+	return fmt.Sprintf("%d", port)
 }

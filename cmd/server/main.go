@@ -42,6 +42,7 @@ func main() {
 	slog.Info("starting aipsa-backend",
 		"version", "1.0.0",
 		"environment", cfg.Environment,
+		"port", cfg.ServerPort,
 	)
 
 	if err := srv.Start(); err != nil {

@@ -14,6 +14,11 @@ make run
 
 That's it! No configuration needed. The platform works with sensible defaults.
 
+**Note:** The server starts on a random port (10000-60000) by default. Check the logs for the actual port:
+```bash
+docker compose logs app | grep "port"
+```
+
 ## Features
 
 - **Zero-Config** - Works out of the box with auto-generated secrets
@@ -274,7 +279,7 @@ All values have sensible defaults. Only override what you need:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DATABASE_URL` | `postgres://aipsa:aipsa_secret@localhost:5432/aipsa_platform?sslmode=disable` | PostgreSQL connection |
-| `SERVER_PORT` | `8080` | HTTP port |
+| `SERVER_PORT` | random (10000-60000) | HTTP port |
 | `SERVER_HOST` | `0.0.0.0` | Bind address |
 | `ENVIRONMENT` | `development` | `development` or `production` |
 | `JWT_SECRET` | auto-generated | JWT signing secret |
