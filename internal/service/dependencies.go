@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"log/slog"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -21,7 +22,7 @@ type Dependencies struct {
 }
 
 func NewDependencies(cfg *config.Config, logger *slog.Logger) (*Dependencies, error) {
-	pool, err := pgxpool.New(nil, cfg.DatabaseURL)
+	pool, err := pgxpool.New(context.Background(), cfg.DatabaseURL)
 	if err != nil {
 		logger.Error("failed to connect to database", "error", err)
 		return nil, err
