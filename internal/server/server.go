@@ -105,7 +105,14 @@ func setupRoutes(app *fiber.App, services *service.Dependencies, cfg *config.Con
 }
 
 func (s *Server) Start() error {
-	s.logger.Info("starting server", "address", s.cfg.ServerHost+":"+s.cfg.ServerPort)
+	s.logger.Info("",
+		"\n╔══════════════════════════════════════════╗",
+		"\n║           AIPSA Backend Started          ║",
+		"\n╠══════════════════════════════════════════╣",
+		"\n║  API:   http://"+s.cfg.ServerHost+":"+s.cfg.ServerPort,
+		"\n║  Docs:  http://"+s.cfg.ServerHost+":"+s.cfg.ServerPort+"/health",
+		"\n╚══════════════════════════════════════════╝",
+	)
 	return s.app.Listen(s.cfg.ServerHost + ":" + s.cfg.ServerPort)
 }
 
